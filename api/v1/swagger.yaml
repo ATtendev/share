@@ -1,0 +1,286 @@
+basePath: /
+definitions:
+  v1.CreateSession:
+    properties:
+      description:
+        description: optional
+        type: string
+      is_finished:
+        type: boolean
+      position:
+        description: optional
+        items:
+          $ref: '#/definitions/v1.Point'
+        type: array
+      title:
+        description: required
+        type: string
+    type: object
+  v1.CreateSessionResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/v1.Session'
+      msg:
+        type: string
+    type: object
+  v1.FinishSession:
+    properties:
+      id:
+        type: string
+    type: object
+  v1.Point:
+    properties:
+      t:
+        description: required timestamp
+        type: integer
+      x:
+        description: optional latitude
+        type: number
+      "y":
+        description: optional longitude
+        type: number
+      z:
+        description: optional elevation (if not provided, will be set to 0)
+        type: number
+    type: object
+  v1.Response:
+    properties:
+      code:
+        type: integer
+      msg:
+        type: string
+    type: object
+  v1.Session:
+    properties:
+      created_at:
+        type: string
+      delete_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      is_finished:
+        type: boolean
+      position:
+        items:
+          $ref: '#/definitions/v1.Point'
+        type: array
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  v1.SignIn:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  v1.SignInResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/v1.Token'
+      msg:
+        type: string
+    type: object
+  v1.SignUp:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  v1.Token:
+    properties:
+      access_token:
+        type: string
+    type: object
+  v1.UpdateSession:
+    properties:
+      description:
+        description: optional
+        type: string
+      id:
+        type: string
+      title:
+        description: required
+        type: string
+    type: object
+  v1.UpdateSessionPosition:
+    properties:
+      id:
+        type: string
+      position:
+        description: optional
+        items:
+          $ref: '#/definitions/v1.Point'
+        type: array
+    type: object
+info:
+  contact:
+    email: s.vie4m@gmail.com
+  title: share API
+  version: "1.0"
+paths:
+  /api/v1/auth/signin:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Sign-in object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.SignIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: signin information
+          schema:
+            $ref: '#/definitions/v1.SignInResponse'
+      summary: Sign-in to share .
+      tags:
+      - auth
+  /api/v1/auth/signout:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sign-out success
+          schema:
+            $ref: '#/definitions/v1.Response'
+      security:
+      - BearerAuth: []
+      summary: Sign-out from share.
+      tags:
+      - auth
+  /api/v1/auth/signup:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Sign-up object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.SignUp'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response information
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: Sign-up to share.
+      tags:
+      - auth
+  /api/v1/session:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create session object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CreateSession'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: session information
+          schema:
+            $ref: '#/definitions/v1.CreateSessionResponse'
+      security:
+      - BearerAuth: []
+      summary: Create session to share
+      tags:
+      - session
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Update session object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.UpdateSession'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: session information
+          schema:
+            $ref: '#/definitions/v1.Response'
+      security:
+      - BearerAuth: []
+      summary: Update session to share
+      tags:
+      - session
+  /api/v1/session/{sessionID}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Session ID to be deleted
+        in: path
+        name: sessionID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: session information
+          schema:
+            $ref: '#/definitions/v1.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete session to share
+      tags:
+      - session
+  /api/v1/session/position:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Finish session object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.FinishSession'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: session information
+          schema:
+            $ref: '#/definitions/v1.Response'
+      security:
+      - BearerAuth: []
+      summary: Finish session position to share
+      tags:
+      - session
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

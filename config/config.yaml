@@ -1,0 +1,17 @@
+ServerConf:
+  ID : dc1
+  Host: 0.0.0.0
+  Port: 8080
+  Secret: abc123456789
+  Banner: ./docs/banner.jpg
+
+DatabaseConf:
+  Type: postgres
+  Host: 127.0.0.1
+  Port: 5432
+  DBName: zoo
+  Username: root # set your username
+  Password: root # set your password
+  MaxOpenConn: 100
+  SSLMode: disable # disable or require
+  CacheTime: 5
