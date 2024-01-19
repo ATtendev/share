@@ -33,7 +33,7 @@ type Session struct {
 	Description *string    `json:"description,omitempty"`
 	Title       *string    `json:"title,omitempty"`
 	Position    []Point    `json:"position,omitempty"`
-	IsFinished  bool       `json:"is_finished"`
+	IsFinished  bool       `json:"is_finished,omitempty"`
 }
 
 type CreateSession struct {

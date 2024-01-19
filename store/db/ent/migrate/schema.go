@@ -15,7 +15,7 @@ var (
 		{Name: "updated_at", Type: field.TypeTime, Comment: "Update Time"},
 		{Name: "delete_at", Type: field.TypeTime, Nullable: true},
 		{Name: "description", Type: field.TypeString, Nullable: true, Default: "good trip"},
-		{Name: "title", Type: field.TypeString, Default: "trip bf13553a-d64d-4ea7-9dd4-a25e81e75814"},
+		{Name: "title", Type: field.TypeString, Default: "trip 2d6d6b45-d976-42e9-a89c-374b3d2b2e8e"},
 		{Name: "position", Type: field.TypeJSON, Nullable: true},
 		{Name: "is_finished", Type: field.TypeBool, Default: false},
 		{Name: "user_id", Type: field.TypeUUID, Comment: "User's UUID"},
