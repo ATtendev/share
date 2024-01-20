@@ -24,6 +24,7 @@ type Session struct {
 	Title       *string
 	Position    []Point
 	IsFinished  bool
+	IsShared    bool
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeleteAt    *time.Time
@@ -34,6 +35,7 @@ type UpdateSession struct {
 	UserID      uuid.UUID
 	Description *string
 	Title       *string
+	IsShared    *bool
 	IsFinished  *bool
 }
 
@@ -43,6 +45,7 @@ type FinishSession struct {
 	Description *string
 	Title       *string
 	IsFinished  *bool
+	IsShared    *bool
 	CreatedAt   *time.Time
 	UpdatedAt   *time.Time
 	DeleteAt    *time.Time
@@ -52,6 +55,10 @@ type UpdatePosition struct {
 	ID       uuid.UUID
 	UserID   uuid.UUID
 	Position []Point
+}
+
+func (s *Store) IsSessionExist(ctx context.Context, in *FinishSession) bool {
+	return s.ent.Session.Query().Where(session.IDEQ(*in.ID), session.DeleteAtIsNil()).ExistX(ctx)
 }
 
 func (s *Store) CreateSession(ctx context.Context, in *Session) (*ent.Session, error) {
@@ -77,6 +84,7 @@ func (s *Store) UpdateSession(ctx context.Context, in *UpdateSession) error {
 		SetNillableDescription(in.Description).
 		SetNillableTitle(in.Title).
 		SetNillableIsFinished(in.IsFinished).
+		SetNillableIsShared(in.IsShared).
 		Exec(ctx)
 }
 

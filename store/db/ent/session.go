@@ -38,6 +38,8 @@ type Session struct {
 	Position []schema.Point `json:"position,omitempty"`
 	// IsFinished holds the value of the "is_finished" field.
 	IsFinished bool `json:"is_finished,omitempty"`
+	// IsShared holds the value of the "is_shared" field.
+	IsShared bool `json:"is_shared,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SessionQuery when eager-loading is set.
 	Edges        SessionEdges `json:"edges"`
@@ -73,7 +75,7 @@ func (*Session) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case session.FieldPosition:
 			values[i] = new([]byte)
-		case session.FieldIsFinished:
+		case session.FieldIsFinished, session.FieldIsShared:
 			values[i] = new(sql.NullBool)
 		case session.FieldDescription, session.FieldTitle:
 			values[i] = new(sql.NullString)
@@ -153,6 +155,12 @@ func (s *Session) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				s.IsFinished = value.Bool
 			}
+		case session.FieldIsShared:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_shared", values[i])
+			} else if value.Valid {
+				s.IsShared = value.Bool
+			}
 		default:
 			s.selectValues.Set(columns[i], values[i])
 		}
@@ -219,6 +227,9 @@ func (s *Session) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("is_finished=")
 	builder.WriteString(fmt.Sprintf("%v", s.IsFinished))
+	builder.WriteString(", ")
+	builder.WriteString("is_shared=")
+	builder.WriteString(fmt.Sprintf("%v", s.IsShared))
 	builder.WriteByte(')')
 	return builder.String()
 }

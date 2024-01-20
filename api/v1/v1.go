@@ -14,7 +14,7 @@ import (
 type APIV1Service struct {
 	Secret  string
 	storeDB *db.Store
-	geodb   *geo.Geo
+	geoDB   *geo.Geo
 }
 
 // @title                      share API
@@ -29,7 +29,7 @@ func NewAPIV1Service(secret string, storeDB *db.Store, geoDB *geo.Geo) *APIV1Ser
 	return &APIV1Service{
 		Secret:  secret,
 		storeDB: storeDB,
-		geodb:   geoDB,
+		geoDB:   geoDB,
 	}
 }
 

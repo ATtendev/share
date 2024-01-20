@@ -30,6 +30,7 @@ func (Session) Fields() []ent.Field {
 		field.String("title").Default("trip " + uuid.NewString()),
 		field.JSON("position", []Point{}).Optional(),
 		field.Bool("is_finished").Default(false),
+		field.Bool("is_shared").Default(false),
 	}
 }
 

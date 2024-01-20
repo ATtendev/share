@@ -45,6 +45,10 @@ func init() {
 	sessionDescIsFinished := sessionFields[4].Descriptor()
 	// session.DefaultIsFinished holds the default value on creation for the is_finished field.
 	session.DefaultIsFinished = sessionDescIsFinished.Default.(bool)
+	// sessionDescIsShared is the schema descriptor for is_shared field.
+	sessionDescIsShared := sessionFields[5].Descriptor()
+	// session.DefaultIsShared holds the default value on creation for the is_shared field.
+	session.DefaultIsShared = sessionDescIsShared.Default.(bool)
 	// sessionDescID is the schema descriptor for id field.
 	sessionDescID := sessionMixinFields0[0].Descriptor()
 	// session.DefaultID holds the default value on creation for the id field.

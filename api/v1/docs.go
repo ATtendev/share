@@ -182,8 +182,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/session/position": {
-            "put": {
+        "/api/v1/session/finish": {
+            "post": {
                 "security": [
                     {
                         "BearerAuth": []
@@ -208,6 +208,87 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/v1.FinishSession"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "session information",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/session/position": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "session"
+                ],
+                "summary": "Update session position to share",
+                "parameters": [
+                    {
+                        "description": "Update session position object",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.UpdateSessionPosition"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "session information",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/session/search/{sessionID}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "session"
+                ],
+                "summary": "Search session to share",
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "Latitude for location-based search",
+                        "name": "lat",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for location-based search",
+                        "name": "lon",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -266,6 +347,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "is_finished": {
+                    "type": "boolean"
+                },
+                "is_shared": {
                     "type": "boolean"
                 },
                 "position": {
@@ -353,6 +437,9 @@ const docTemplate = `{
                 "is_finished": {
                     "type": "boolean"
                 },
+                "is_shared": {
+                    "type": "boolean"
+                },
                 "position": {
                     "type": "array",
                     "items": {
@@ -426,6 +513,9 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "string"
+                },
+                "is_shared": {
+                    "type": "boolean"
                 },
                 "title": {
                     "description": "required",

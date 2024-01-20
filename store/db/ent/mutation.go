@@ -47,6 +47,7 @@ type SessionMutation struct {
 	position       *[]schema.Point
 	appendposition []schema.Point
 	is_finished    *bool
+	is_shared      *bool
 	clearedFields  map[string]struct{}
 	users          *uuid.UUID
 	clearedusers   bool
@@ -502,6 +503,42 @@ func (m *SessionMutation) ResetIsFinished() {
 	m.is_finished = nil
 }
 
+// SetIsShared sets the "is_shared" field.
+func (m *SessionMutation) SetIsShared(b bool) {
+	m.is_shared = &b
+}
+
+// IsShared returns the value of the "is_shared" field in the mutation.
+func (m *SessionMutation) IsShared() (r bool, exists bool) {
+	v := m.is_shared
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsShared returns the old "is_shared" field's value of the Session entity.
+// If the Session object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SessionMutation) OldIsShared(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsShared is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsShared requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsShared: %w", err)
+	}
+	return oldValue.IsShared, nil
+}
+
+// ResetIsShared resets all changes to the "is_shared" field.
+func (m *SessionMutation) ResetIsShared() {
+	m.is_shared = nil
+}
+
 // SetUsersID sets the "users" edge to the User entity by id.
 func (m *SessionMutation) SetUsersID(id uuid.UUID) {
 	m.users = &id
@@ -576,7 +613,7 @@ func (m *SessionMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SessionMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 9)
 	if m.created_at != nil {
 		fields = append(fields, session.FieldCreatedAt)
 	}
@@ -600,6 +637,9 @@ func (m *SessionMutation) Fields() []string {
 	}
 	if m.is_finished != nil {
 		fields = append(fields, session.FieldIsFinished)
+	}
+	if m.is_shared != nil {
+		fields = append(fields, session.FieldIsShared)
 	}
 	return fields
 }
@@ -625,6 +665,8 @@ func (m *SessionMutation) Field(name string) (ent.Value, bool) {
 		return m.Position()
 	case session.FieldIsFinished:
 		return m.IsFinished()
+	case session.FieldIsShared:
+		return m.IsShared()
 	}
 	return nil, false
 }
@@ -650,6 +692,8 @@ func (m *SessionMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldPosition(ctx)
 	case session.FieldIsFinished:
 		return m.OldIsFinished(ctx)
+	case session.FieldIsShared:
+		return m.OldIsShared(ctx)
 	}
 	return nil, fmt.Errorf("unknown Session field %s", name)
 }
@@ -714,6 +758,13 @@ func (m *SessionMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetIsFinished(v)
+		return nil
+	case session.FieldIsShared:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsShared(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Session field %s", name)
@@ -808,6 +859,9 @@ func (m *SessionMutation) ResetField(name string) error {
 		return nil
 	case session.FieldIsFinished:
 		m.ResetIsFinished()
+		return nil
+	case session.FieldIsShared:
+		m.ResetIsShared()
 		return nil
 	}
 	return fmt.Errorf("unknown Session field %s", name)

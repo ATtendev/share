@@ -138,6 +138,20 @@ func (su *SessionUpdate) SetNillableIsFinished(b *bool) *SessionUpdate {
 	return su
 }
 
+// SetIsShared sets the "is_shared" field.
+func (su *SessionUpdate) SetIsShared(b bool) *SessionUpdate {
+	su.mutation.SetIsShared(b)
+	return su
+}
+
+// SetNillableIsShared sets the "is_shared" field if the given value is not nil.
+func (su *SessionUpdate) SetNillableIsShared(b *bool) *SessionUpdate {
+	if b != nil {
+		su.SetIsShared(*b)
+	}
+	return su
+}
+
 // SetUsersID sets the "users" edge to the User entity by ID.
 func (su *SessionUpdate) SetUsersID(id uuid.UUID) *SessionUpdate {
 	su.mutation.SetUsersID(id)
@@ -247,6 +261,9 @@ func (su *SessionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := su.mutation.IsFinished(); ok {
 		_spec.SetField(session.FieldIsFinished, field.TypeBool, value)
+	}
+	if value, ok := su.mutation.IsShared(); ok {
+		_spec.SetField(session.FieldIsShared, field.TypeBool, value)
 	}
 	if su.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -403,6 +420,20 @@ func (suo *SessionUpdateOne) SetNillableIsFinished(b *bool) *SessionUpdateOne {
 	return suo
 }
 
+// SetIsShared sets the "is_shared" field.
+func (suo *SessionUpdateOne) SetIsShared(b bool) *SessionUpdateOne {
+	suo.mutation.SetIsShared(b)
+	return suo
+}
+
+// SetNillableIsShared sets the "is_shared" field if the given value is not nil.
+func (suo *SessionUpdateOne) SetNillableIsShared(b *bool) *SessionUpdateOne {
+	if b != nil {
+		suo.SetIsShared(*b)
+	}
+	return suo
+}
+
 // SetUsersID sets the "users" edge to the User entity by ID.
 func (suo *SessionUpdateOne) SetUsersID(id uuid.UUID) *SessionUpdateOne {
 	suo.mutation.SetUsersID(id)
@@ -542,6 +573,9 @@ func (suo *SessionUpdateOne) sqlSave(ctx context.Context) (_node *Session, err e
 	}
 	if value, ok := suo.mutation.IsFinished(); ok {
 		_spec.SetField(session.FieldIsFinished, field.TypeBool, value)
+	}
+	if value, ok := suo.mutation.IsShared(); ok {
+		_spec.SetField(session.FieldIsShared, field.TypeBool, value)
 	}
 	if suo.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{

@@ -119,6 +119,20 @@ func (sc *SessionCreate) SetNillableIsFinished(b *bool) *SessionCreate {
 	return sc
 }
 
+// SetIsShared sets the "is_shared" field.
+func (sc *SessionCreate) SetIsShared(b bool) *SessionCreate {
+	sc.mutation.SetIsShared(b)
+	return sc
+}
+
+// SetNillableIsShared sets the "is_shared" field if the given value is not nil.
+func (sc *SessionCreate) SetNillableIsShared(b *bool) *SessionCreate {
+	if b != nil {
+		sc.SetIsShared(*b)
+	}
+	return sc
+}
+
 // SetID sets the "id" field.
 func (sc *SessionCreate) SetID(u uuid.UUID) *SessionCreate {
 	sc.mutation.SetID(u)
@@ -199,6 +213,10 @@ func (sc *SessionCreate) defaults() {
 		v := session.DefaultIsFinished
 		sc.mutation.SetIsFinished(v)
 	}
+	if _, ok := sc.mutation.IsShared(); !ok {
+		v := session.DefaultIsShared
+		sc.mutation.SetIsShared(v)
+	}
 	if _, ok := sc.mutation.ID(); !ok {
 		v := session.DefaultID()
 		sc.mutation.SetID(v)
@@ -221,6 +239,9 @@ func (sc *SessionCreate) check() error {
 	}
 	if _, ok := sc.mutation.IsFinished(); !ok {
 		return &ValidationError{Name: "is_finished", err: errors.New(`ent: missing required field "Session.is_finished"`)}
+	}
+	if _, ok := sc.mutation.IsShared(); !ok {
+		return &ValidationError{Name: "is_shared", err: errors.New(`ent: missing required field "Session.is_shared"`)}
 	}
 	if _, ok := sc.mutation.UsersID(); !ok {
 		return &ValidationError{Name: "users", err: errors.New(`ent: missing required edge "Session.users"`)}
@@ -287,6 +308,10 @@ func (sc *SessionCreate) createSpec() (*Session, *sqlgraph.CreateSpec) {
 	if value, ok := sc.mutation.IsFinished(); ok {
 		_spec.SetField(session.FieldIsFinished, field.TypeBool, value)
 		_node.IsFinished = value
+	}
+	if value, ok := sc.mutation.IsShared(); ok {
+		_spec.SetField(session.FieldIsShared, field.TypeBool, value)
+		_node.IsShared = value
 	}
 	if nodes := sc.mutation.UsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

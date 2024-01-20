@@ -31,6 +31,8 @@ const (
 	FieldPosition = "position"
 	// FieldIsFinished holds the string denoting the is_finished field in the database.
 	FieldIsFinished = "is_finished"
+	// FieldIsShared holds the string denoting the is_shared field in the database.
+	FieldIsShared = "is_shared"
 	// EdgeUsers holds the string denoting the users edge name in mutations.
 	EdgeUsers = "users"
 	// Table holds the table name of the session in the database.
@@ -55,6 +57,7 @@ var Columns = []string{
 	FieldTitle,
 	FieldPosition,
 	FieldIsFinished,
+	FieldIsShared,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -80,6 +83,8 @@ var (
 	DefaultTitle string
 	// DefaultIsFinished holds the default value on creation for the "is_finished" field.
 	DefaultIsFinished bool
+	// DefaultIsShared holds the default value on creation for the "is_shared" field.
+	DefaultIsShared bool
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )
@@ -125,6 +130,11 @@ func ByTitle(opts ...sql.OrderTermOption) OrderOption {
 // ByIsFinished orders the results by the is_finished field.
 func ByIsFinished(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsFinished, opts...).ToFunc()
+}
+
+// ByIsShared orders the results by the is_shared field.
+func ByIsShared(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsShared, opts...).ToFunc()
 }
 
 // ByUsersField orders the results by users field.

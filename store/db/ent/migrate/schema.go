@@ -15,9 +15,10 @@ var (
 		{Name: "updated_at", Type: field.TypeTime, Comment: "Update Time"},
 		{Name: "delete_at", Type: field.TypeTime, Nullable: true},
 		{Name: "description", Type: field.TypeString, Nullable: true, Default: "good trip"},
-		{Name: "title", Type: field.TypeString, Default: "trip 2d6d6b45-d976-42e9-a89c-374b3d2b2e8e"},
+		{Name: "title", Type: field.TypeString, Default: "trip c25b67a9-ef50-4725-bac4-3a6c6ad1b9e4"},
 		{Name: "position", Type: field.TypeJSON, Nullable: true},
 		{Name: "is_finished", Type: field.TypeBool, Default: false},
+		{Name: "is_shared", Type: field.TypeBool, Default: false},
 		{Name: "user_id", Type: field.TypeUUID, Comment: "User's UUID"},
 	}
 	// SessionsTable holds the schema information for the "sessions" table.
@@ -28,7 +29,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "sessions_users_users",
-				Columns:    []*schema.Column{SessionsColumns[8]},
+				Columns:    []*schema.Column{SessionsColumns[9]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
@@ -37,7 +38,7 @@ var (
 			{
 				Name:    "session_user_id",
 				Unique:  false,
-				Columns: []*schema.Column{SessionsColumns[8]},
+				Columns: []*schema.Column{SessionsColumns[9]},
 			},
 		},
 	}

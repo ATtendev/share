@@ -91,6 +91,11 @@ func IsFinished(v bool) predicate.Session {
 	return predicate.Session(sql.FieldEQ(FieldIsFinished, v))
 }
 
+// IsShared applies equality check predicate on the "is_shared" field. It's identical to IsSharedEQ.
+func IsShared(v bool) predicate.Session {
+	return predicate.Session(sql.FieldEQ(FieldIsShared, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Session {
 	return predicate.Session(sql.FieldEQ(FieldCreatedAt, v))
@@ -399,6 +404,16 @@ func IsFinishedEQ(v bool) predicate.Session {
 // IsFinishedNEQ applies the NEQ predicate on the "is_finished" field.
 func IsFinishedNEQ(v bool) predicate.Session {
 	return predicate.Session(sql.FieldNEQ(FieldIsFinished, v))
+}
+
+// IsSharedEQ applies the EQ predicate on the "is_shared" field.
+func IsSharedEQ(v bool) predicate.Session {
+	return predicate.Session(sql.FieldEQ(FieldIsShared, v))
+}
+
+// IsSharedNEQ applies the NEQ predicate on the "is_shared" field.
+func IsSharedNEQ(v bool) predicate.Session {
+	return predicate.Session(sql.FieldNEQ(FieldIsShared, v))
 }
 
 // HasUsers applies the HasEdge predicate on the "users" edge.

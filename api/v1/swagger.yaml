@@ -7,6 +7,8 @@ definitions:
         type: string
       is_finished:
         type: boolean
+      is_shared:
+        type: boolean
       position:
         description: optional
         items:
@@ -64,6 +66,8 @@ definitions:
         type: string
       is_finished:
         type: boolean
+      is_shared:
+        type: boolean
       position:
         items:
           $ref: '#/definitions/v1.Point'
@@ -112,6 +116,8 @@ definitions:
         type: string
       id:
         type: string
+      is_shared:
+        type: boolean
       title:
         description: required
         type: string
@@ -255,8 +261,8 @@ paths:
       summary: Delete session to share
       tags:
       - session
-  /api/v1/session/position:
-    put:
+  /api/v1/session/finish:
+    post:
       consumes:
       - application/json
       parameters:
@@ -276,6 +282,56 @@ paths:
       security:
       - BearerAuth: []
       summary: Finish session position to share
+      tags:
+      - session
+  /api/v1/session/position:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Update session position object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.UpdateSessionPosition'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: session information
+          schema:
+            $ref: '#/definitions/v1.Response'
+      security:
+      - BearerAuth: []
+      summary: Update session position to share
+      tags:
+      - session
+  /api/v1/session/search/{sessionID}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Latitude for location-based search
+        in: query
+        name: lat
+        required: true
+        type: number
+      - description: Longitude for location-based search
+        in: query
+        name: lon
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: session information
+          schema:
+            $ref: '#/definitions/v1.Response'
+      security:
+      - BearerAuth: []
+      summary: Search session to share
       tags:
       - session
 securityDefinitions:

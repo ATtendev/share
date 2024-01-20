@@ -19,7 +19,7 @@ type Server struct {
 	ctx     context.Context
 	e       *echo.Echo
 	storeDB *db.Store
-	geodb   *geo.Geo
+	geoDB   *geo.Geo
 	cfgs    config.Config
 }
 
@@ -34,7 +34,7 @@ func NewServer(ctx context.Context, cfgs *config.Config, storeDB *db.Store, geoD
 		e:       e,
 		cfgs:    *cfgs,
 		storeDB: storeDB,
-		geodb:   geoDB,
+		geoDB:   geoDB,
 	}
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{

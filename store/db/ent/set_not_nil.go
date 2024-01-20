@@ -178,6 +178,30 @@ func (s *SessionCreate) SetNotNilIsFinished(value *bool) *SessionCreate {
 }
 
 // set field if value's pointer is not nil.
+func (s *SessionUpdate) SetNotNilIsShared(value *bool) *SessionUpdate {
+	if value != nil {
+		return s.SetIsShared(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *SessionUpdateOne) SetNotNilIsShared(value *bool) *SessionUpdateOne {
+	if value != nil {
+		return s.SetIsShared(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *SessionCreate) SetNotNilIsShared(value *bool) *SessionCreate {
+	if value != nil {
+		return s.SetIsShared(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
 func (t *TokenUpdate) SetNotNilUpdatedAt(value *time.Time) *TokenUpdate {
 	if value != nil {
 		return t.SetUpdatedAt(*value)
