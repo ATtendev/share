@@ -156,7 +156,7 @@ func (s *APIV1Service) CreateSession(c echo.Context) error {
 // @Produce  json
 // @Security BearerAuth
 // @Param    body body     UpdateSession true "Update session object"
-// @Success  200 {object} Response "session information"
+// @Success  200    {object} Response "session information"
 // @Router   /api/v1/session [PUT]
 func (s *APIV1Service) UpdateSession(c echo.Context) error {
 	ctx := c.Request().Context()
@@ -235,7 +235,7 @@ func (s *APIV1Service) UpdateSessionPosition(c echo.Context) error {
 		})
 	}
 	// TODO: add last position to geoDB
-	if err := s.geoDB.AddGeoPoint(ctx, session.ID.String(), userID, &geo.Point{
+	if err := s.geoDB.AddGeoPoint(ctx, "fleet", session.ID.String(), userID, &geo.Point{
 		Lat: session.Position[len(session.Position)-1].X,
 		Lon: session.Position[len(session.Position)-1].Y,
 	}); err != nil {
@@ -348,8 +348,8 @@ func (s *APIV1Service) DeleteSession(c echo.Context) error {
 // @Accept   json
 // @Produce  json
 // @Security BearerAuth
-// @Param    lat query    number   true "Latitude for location-based search"
-// @Param    lon query    number   true "Longitude for location-based search"
+// @Param    lat    query    number   true "Latitude for location-based search"
+// @Param    lon    query    number   true "Longitude for location-based search"
 // @Param    radius query    number   true "Radius for location-based search in meters"
 // @Success  200  {object} Response              "session information"
 // @Router   /api/v1/session/search/{sessionID} [GET]
@@ -396,7 +396,7 @@ func (s *APIV1Service) SearchSession(c echo.Context) error {
 			Code: http.StatusUnauthorized,
 		})
 	}
-	points, err := s.geoDB.Nearby(ctx, userID, geo.Point{
+	points, err := s.geoDB.Nearby(ctx, "fleet", userID, geo.Point{
 		Lat: lat,
 		Lon: lon,
 	}, radius)

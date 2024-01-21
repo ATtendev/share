@@ -58,4 +58,6 @@ func (s *APIV1Service) Register(rootGroup *echo.Group) {
 	s.registerUserRoutes(apiV1GroupPub, apiV1GroupPriv)
 	s.registerAuthRoutes(apiV1GroupPub, apiV1GroupPriv)
 	s.registerSessionRoutes(apiV1GroupPub, apiV1GroupPriv)
+	s.registerCurrentPositionRoutes(apiV1GroupPub, apiV1GroupPriv)
+
 }

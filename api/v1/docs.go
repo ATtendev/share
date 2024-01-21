@@ -108,6 +108,94 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/position": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "position"
+                ],
+                "summary": "Update position to share",
+                "parameters": [
+                    {
+                        "description": "Update current position object",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.UpdateCurrentPosition"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Position information",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/position/search": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "position"
+                ],
+                "summary": "Search current position to share",
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "Latitude for location-based search",
+                        "name": "lat",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude for location-based search",
+                        "name": "lon",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Radius for location-based search in meters",
+                        "name": "radius",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "position information",
+                        "schema": {
+                            "$ref": "#/definitions/v1.SearchCurrentPositionResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/session": {
             "put": {
                 "security": [
@@ -289,6 +377,13 @@ const docTemplate = `{
                         "name": "lon",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Radius for location-based search in meters",
+                        "name": "radius",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -408,11 +503,39 @@ const docTemplate = `{
                 }
             }
         },
+        "v1.Position": {
+            "type": "object",
+            "properties": {
+                "position": {
+                    "$ref": "#/definitions/v1.Point"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
         "v1.Response": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.SearchCurrentPositionResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/v1.Position"
+                    }
                 },
                 "msg": {
                     "type": "string"
@@ -501,6 +624,15 @@ const docTemplate = `{
             "properties": {
                 "access_token": {
                     "type": "string"
+                }
+            }
+        },
+        "v1.UpdateCurrentPosition": {
+            "type": "object",
+            "properties": {
+                "position": {
+                    "description": "optional",
+                    "$ref": "#/definitions/v1.Point"
                 }
             }
         },

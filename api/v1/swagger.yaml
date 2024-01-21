@@ -47,10 +47,28 @@ definitions:
         description: optional elevation (if not provided, will be set to 0)
         type: number
     type: object
+  v1.Position:
+    properties:
+      position:
+        $ref: '#/definitions/v1.Point'
+      user_id:
+        type: string
+    type: object
   v1.Response:
     properties:
       code:
         type: integer
+      msg:
+        type: string
+    type: object
+  v1.SearchCurrentPositionResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/v1.Position'
+        type: array
       msg:
         type: string
     type: object
@@ -108,6 +126,12 @@ definitions:
     properties:
       access_token:
         type: string
+    type: object
+  v1.UpdateCurrentPosition:
+    properties:
+      position:
+        $ref: '#/definitions/v1.Point'
+        description: optional
     type: object
   v1.UpdateSession:
     properties:
@@ -194,6 +218,61 @@ paths:
       summary: Sign-up to share.
       tags:
       - auth
+  /api/v1/position:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Update current position object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.UpdateCurrentPosition'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Position information
+          schema:
+            $ref: '#/definitions/v1.Response'
+      security:
+      - BearerAuth: []
+      summary: Update position to share
+      tags:
+      - position
+  /api/v1/position/search:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Latitude for location-based search
+        in: query
+        name: lat
+        required: true
+        type: number
+      - description: Longitude for location-based search
+        in: query
+        name: lon
+        required: true
+        type: number
+      - description: Radius for location-based search in meters
+        in: query
+        name: radius
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: position information
+          schema:
+            $ref: '#/definitions/v1.SearchCurrentPositionResponse'
+      security:
+      - BearerAuth: []
+      summary: Search current position to share
+      tags:
+      - position
   /api/v1/session:
     post:
       consumes:
@@ -320,6 +399,11 @@ paths:
       - description: Longitude for location-based search
         in: query
         name: lon
+        required: true
+        type: number
+      - description: Radius for location-based search in meters
+        in: query
+        name: radius
         required: true
         type: number
       produces:
